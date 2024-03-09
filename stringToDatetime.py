@@ -1,8 +1,8 @@
 from datetime import datetime, timedelta
 
-# Define the input string
+
 class StringToDatetime:
-    def __init__(self, inputString):
+    def __init__(self, inputString) -> None:
         self.inputString = inputString
 
         self.month_map = {
@@ -11,7 +11,7 @@ class StringToDatetime:
             'SEP': 9, 'OCT': 10, 'NOV': 11, 'DEC': 12
         }
 
-    def getDatetime(self):
+    def getDatetime(self) -> datetime:
         month, day, year, hour, minute, amPm = self.getDate()
         if amPm == "PM" and hour != 12:
             hour += 12
@@ -19,7 +19,7 @@ class StringToDatetime:
         return datetime(year, month, day, hour, minute)
     
 
-    def getDate(self):
+    def getDate(self) -> tuple[int, int, int, int, int, str]:
         parts = self.inputString.split()
 
         month = self.month_map[parts[1]]
@@ -31,5 +31,6 @@ class StringToDatetime:
         hour = int(timeParts[0])
         minute = int(timeParts[1])
         amPm = parts[4]
+        timeZone = parts[5]
 
         return month, day, year, hour, minute, amPm
