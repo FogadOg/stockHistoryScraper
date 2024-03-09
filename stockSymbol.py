@@ -1,4 +1,4 @@
-companySymbols = {
+stockSymbole = {
     # Indexes
     "S&P 500": "^GSPC",
     "Dow Jones Industrial Average": "^DJI",

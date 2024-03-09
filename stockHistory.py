@@ -2,14 +2,14 @@ import yfinance as yf
 import datetime
 import mplfinance as mpf
 from stringToDatetime import StringToDatetime
-from stockSymbol import companySymbols
+from stockSymbol import stockSymbole
 
 class StockHistory():
     def __init__(self, companyName, articalPublishTimeString, timeFrameInHours = 1):
         self.articalPublishTimeString = articalPublishTimeString
         self.timeFrameInHours = timeFrameInHours
 
-        tickerSymbol = companySymbols[companyName]
+        tickerSymbol = stockSymbole[companyName]
 
         self.data = yf.download(tickerSymbol, period='1d', interval='1m')
 
