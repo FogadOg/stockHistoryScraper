@@ -11,6 +11,12 @@ class ArticalScraper():
 
 
 
+    def createArticalObjects(self, hrefs):
+        articalObjects =  []
+        for href in hrefs:
+            articalObject = Artical(href)
+            articalObjects.append(articalObject)
+        return articalObjects
 
         
 
