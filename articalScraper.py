@@ -10,6 +10,17 @@ class ArticalScraper():
 
 
 
+    def findArticalHref(self, articals, cssSelector):
+        hrefs = []
+
+        for artical in articals:
+            aElements = artical.select(cssSelector)
+            
+            for element in aElements:
+                href = element.get("href")
+                hrefs.append(href)
+
+        return hrefs
 
     def createArticalObjects(self, hrefs):
         articalObjects =  []
