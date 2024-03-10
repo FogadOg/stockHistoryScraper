@@ -1,14 +1,14 @@
 import yfinance as yf
 import datetime
 import mplfinance as mpf
-from .stockSymbol import stockSymbole
+from stockSymbol import stockSymbole
 
 class StockHistory():
     def __init__(self, companyName: str, articalPublishTime: datetime, timeFrameInHours = 1):
         self.articalPublishTime = articalPublishTime
         self.timeFrameInHours = timeFrameInHours
 
-        tickerSymbol = stockSymbole[companyName]
+        tickerSymbol = self.getCompanysTikcer(companyName)
 
         self.data = yf.download(tickerSymbol, period='1d', interval='1m')
 
@@ -17,13 +17,19 @@ class StockHistory():
         self.data['Datetime'] = self.data.index
 
         self.stockDataForTimeframe = self.getStockDataForTimeframe()
+        print("stockDataForTimeframe: ",self.stockDataForTimeframe)
+
+    def getCompanysTikcer(self, companyName):
+        try:
+            return stockSymbole[companyName]
+        except KeyError:
+            raise KeyError("company not found in dictonary")
+
 
     def getStockDataForTimeframe(self):
-
         startTime = self.articalPublishTime.replace(tzinfo=datetime.timezone(datetime.timedelta(hours=-5)))
         endTime = startTime + datetime.timedelta(hours=self.timeFrameInHours)
         return self.data[(self.data['Datetime'] >= startTime) & (self.data['Datetime'] <= endTime)]
-
 
     def renderChart(self):
         mpf.plot(self.stockDataForTimeframe, type='candle', style='charles', volume=True)
