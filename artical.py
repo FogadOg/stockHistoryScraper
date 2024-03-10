@@ -6,15 +6,21 @@ class Artical():
     def __init__(self, url):
         response = requests.get(url)
         self.soup = BeautifulSoup(response.text, "html.parser")
-        
         self.title = self.getTitle()
         self.content = self.getContent()
 
         self.releventCompanies = self.extractCompanies()
     
     def getTitle(self) -> str:
-        titleElement = self.soup.find(class_="ArticleHeader-headline")
-        return titleElement.text
+        try:
+            titleElement = self.soup.find(class_="ArticleHeader-headline")
+
+            if titleElement == None:
+                return self.soup.find(class_="LiveBlogHeader-headline").text
+            
+            return titleElement.text
+        except:
+            raise AttributeError("Not valid artical")
 
     def getContent(self) -> str:
         textContainers = self.soup.find_all(class_="group")
