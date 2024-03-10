@@ -14,6 +14,9 @@ class ArticalScraper():
 
         
 
-
+    def extractCompanies(self, articalTitle):
+        doc = nlp(articalTitle)
+        companies = [entity.text for entity in doc.ents if entity.label_ == "ORG"]
+        return companies
 
 
