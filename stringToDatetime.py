@@ -2,7 +2,7 @@ from datetime import datetime, timedelta
 
 
 class StringToDatetime:
-    def __init__(self, inputString) -> None:
+    def __init__(self, inputString: str) -> None:
         self.inputString = inputString
 
         self.month_map = {
@@ -12,14 +12,14 @@ class StringToDatetime:
         }
 
     def getDatetime(self) -> datetime:
-        month, day, year, hour, minute, amPm = self.getDate()
+        month, day, year, hour, minute, amPm = self._getDate()
         if amPm == "PM" and hour != 12:
             hour += 12
 
         return datetime(year, month, day, hour, minute)
     
 
-    def getDate(self) -> tuple[int, int, int, int, int, str]:
+    def _getDate(self) -> tuple[int, int, int, int, int, str]:
         parts = self.inputString.split()
 
         month = self.month_map[parts[1]]
