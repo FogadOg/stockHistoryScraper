@@ -1,12 +1,11 @@
 import yfinance as yf
 import datetime
 import mplfinance as mpf
-from stringToDatetime import StringToDatetime
 from stockSymbol import stockSymbole
 
 class StockHistory():
-    def __init__(self, companyName, articalPublishTimeString, timeFrameInHours = 1):
-        self.articalPublishTimeString = articalPublishTimeString
+    def __init__(self, companyName: str, articalPublishTime: datetime, timeFrameInHours = 1):
+        self.articalPublishTime = articalPublishTime
         self.timeFrameInHours = timeFrameInHours
 
         tickerSymbol = stockSymbole[companyName]
@@ -20,9 +19,8 @@ class StockHistory():
         self.stockDataForTimeframe = self.getStockDataForTimeframe()
 
     def getStockDataForTimeframe(self):
-        articalPublishTime = StringToDatetime(self.articalPublishTimeString).getDatetime()
 
-        startTime = articalPublishTime.replace(tzinfo=datetime.timezone(datetime.timedelta(hours=-5)))
+        startTime = self.articalPublishTime.replace(tzinfo=datetime.timezone(datetime.timedelta(hours=-5)))
         endTime = startTime + datetime.timedelta(hours=self.timeFrameInHours)
         return self.data[(self.data['Datetime'] >= startTime) & (self.data['Datetime'] <= endTime)]
 
@@ -32,4 +30,4 @@ class StockHistory():
 
 
 if __name__ == "__main__":
-    StockHistory('Apple', "FRI, MAR 8 202410:00 AM EST").renderChart()
+    StockHistory('Apple', datetime.datetime(2024, 3, 8, 10, 0, 0)).renderChart()
