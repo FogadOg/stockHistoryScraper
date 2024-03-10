@@ -9,13 +9,21 @@ class Artical():
         self.soup = BeautifulSoup(response.text, "html.parser")
         
         self.title = self.getTitle()
+        self.content = self.getContent()
 
     
     def getTitle(self) -> str:
         titleElement = self.soup.find(class_="ArticleHeader-headline")
         return titleElement.text
 
+    def getContent(self) -> str:
+        textContainers = self.soup.find_all(class_="group")
+        articalText = ""
 
+        for textContainer in textContainers:
+            articalText += textContainer.text
+        
+        return articalText
 
     
     def __str__(self):
