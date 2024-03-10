@@ -1,7 +1,6 @@
-import re, spacy, requests
+import requests
 from bs4 import BeautifulSoup
 from artical import Artical
-nlp = spacy.load("en_core_web_sm")
 
 class ArticalScraper():
     def __init__(self, url) -> None:
@@ -37,9 +36,13 @@ class ArticalScraper():
             
             for element in aElements:
                 href = element.get("href")
-                hrefs.append(href)
+                if self.isHrefValid(href):
+                    hrefs.append(href)
 
         return hrefs
+    
+    def isHrefValid(self, href):
+        return "https" in href
 
     def createArticalObjects(self, hrefs):
         articalObjects =  []
