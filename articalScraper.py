@@ -1,13 +1,22 @@
 import re, spacy, requests
 from bs4 import BeautifulSoup
 from artical import Artical
-nlp = spacy.load("enCore_web_sm")
+nlp = spacy.load("en_core_web_sm")
 
 class ArticalScraper():
     def __init__(self, url) -> None:
         response = requests.get(url)
         soup = BeautifulSoup(response.text, "html.parser")
 
+        articals = self.getAllArticals(soup, "RiverPlus-riverPlusContainer")
+    
+        hrefs = self.findArticalHref(articals, ".RiverHeadline-headline.RiverHeadline-hasThumbnail a")
+        # print("-----------hrefs: ",hrefs)
+
+        articalObjects = self.createArticalObjects(hrefs)
+
+        for articalObject in articalObjects:
+            print(articalObject)
 
 
     def getAllArticals(self, soup, parentElementClass):
@@ -38,12 +47,4 @@ class ArticalScraper():
             articalObject = Artical(href)
             articalObjects.append(articalObject)
         return articalObjects
-
-        
-
-    def extractCompanies(self, articalTitle):
-        doc = nlp(articalTitle)
-        companies = [entity.text for entity in doc.ents if entity.label_ == "ORG"]
-        return companies
-
 
