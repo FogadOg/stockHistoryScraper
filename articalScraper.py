@@ -10,6 +10,16 @@ class ArticalScraper():
 
 
 
+    def getAllArticals(self, soup, parentElementClass):
+        articals = []
+
+        parentElements= soup.find_all(class_=parentElementClass)
+
+        for parentElement in parentElements:
+            for artical in parentElement.children:
+                articals.append(artical)
+        return articals
+        
     def findArticalHref(self, articals, cssSelector):
         hrefs = []
 
