@@ -11,6 +11,7 @@ class Artical():
         self.title = self.getTitle()
         self.content = self.getContent()
 
+        self.releventCompanies = self.extractCompanies()
     
     def getTitle(self) -> str:
         titleElement = self.soup.find(class_="ArticleHeader-headline")
@@ -24,7 +25,11 @@ class Artical():
             articalText += textContainer.text
         
         return articalText
-
+    
+    def extractCompanies(self):
+        doc = nlp(self.content)
+        companies = [entity.text for entity in doc.ents if entity.label_ == "ORG"]
+        return list(set(companies))
     
     def __str__(self):
         return self.url
