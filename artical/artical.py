@@ -1,12 +1,16 @@
-import requests, spacy, csv, datetime, sys, os
+import  sys, os
+
+currentDir = os.path.dirname(os.path.abspath(__file__))
+parentDir = os.path.abspath(os.path.join(currentDir, '..'))
+sys.path.append(parentDir)
+
+
+import requests, spacy, csv, datetime
 from bs4 import BeautifulSoup
 from stock.stockHistory import StockHistory
 from stringToDatetime import StringToDatetime
 
-currentDir = os.path.dirname(os.path.abspath(__file__))
-parentDir = os.path.abspath(os.path.join(currentDir, '..'))
 
-sys.path.append(parentDir)
 nlp = spacy.load("en_core_web_sm")
 
 class Artical():
@@ -69,7 +73,7 @@ class Artical():
             csvWriter.writerow(["News Artical", "Stock"])
 
     def getStockHistory(self, company):
-        StockHistory(company, self.publishTime)
+        StockHistory(company, self.publishTime).renderChart()
 
     def __str__(self):
         return self.title
