@@ -28,7 +28,6 @@ class StockHistory():
         try:
             return stockSymbole[self.companyName]
         except KeyError:
-            print("cant find: ",self.companyName)
             raise KeyError("company not found in dictonary")
 
 
@@ -44,6 +43,6 @@ class StockHistory():
 
 
 if __name__ == "__main__":
-    stockHistory = StockHistory('Apple', datetime.datetime(2024, 3, 8, 14, 30, 0))
+    stockHistory = StockHistory('Apple', datetime.datetime(2024, 3, 11, 10, 00, 0))
     print(stockHistory["Open"])
-    # stockHistory.renderChart()
+    stockHistory.renderChart()
