@@ -63,21 +63,26 @@ class Artical():
         self.writeHeader(csvFile)
 
         for company in self.releventCompanies:
-            self.getStockHistory(company)
-            with open(csvFile, "a", newline="") as file:
-                csvWriter = csv.writer(file)
-                csvWriter.writerow([company, "Stock"])
+            stockHistory = self.getStockHistory(company)
+            if stockHistory != None:
+                with open(csvFile, "a", newline="") as file:
+                    csvWriter = csv.writer(file)
+                    csvWriter.writerow([company, stockHistory["Open"], stockHistory["Close"]])
 
-    def writeHeader(self, csvFile):        
+    def writeHeader(self, csvFile) -> None:        
         with open(csvFile, "w", newline="") as file:
             csvWriter = csv.writer(file)
             csvWriter.writerow(["News Artical", "Stocks Open", "Stocks Close"])
 
-    def getStockHistory(self, company):
+    def getStockHistory(self, company:str) -> StockHistory:
         try:
-            return StockHistory(company, self.publishTime).renderChart()
+            return StockHistory(company, self.publishTime)
         except KeyError:
-            pass
+            print("skiped becuase company not found")
+            return None
+        except IndexError:
+            print("skiped artical was published after closing times")
+            return None
 
     def __str__(self):
         return self.title
@@ -85,5 +90,4 @@ class Artical():
 
 if __name__ == "__main__":
     artical = Artical("https://www.cnbc.com/2024/03/07/stock-market-today-live-updates.html")
-    print(artical.releventCompanies)
     artical.export()
