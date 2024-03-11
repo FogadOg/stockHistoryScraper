@@ -1,7 +1,7 @@
 import yfinance as yf
 import datetime
 import mplfinance as mpf
-from .stockSymbol import stockSymbole
+from stockSymbol import stockSymbole
 
 class StockHistory():
     def __init__(self, companyName: str, articalPublishTime: datetime.datetime, timeFrameInHours = 1):
@@ -18,7 +18,11 @@ class StockHistory():
         self.data['Datetime'] = self.data.index
 
         self.stockDataForTimeframe = self.getStockDataForTimeframe()
-        print("stockDataForTimeframe: ",self.stockDataForTimeframe)
+
+    def __getitem__(self, attribute):
+        data = self.stockDataForTimeframe.drop(columns=['Datetime'])[[attribute]]
+        data.reset_index(drop=True, inplace=True)
+        return [value for sublist in data.values.tolist() for value in sublist]
 
     def getCompanysTicker(self):
         try:
@@ -40,4 +44,6 @@ class StockHistory():
 
 
 if __name__ == "__main__":
-    StockHistory('Apple', datetime.datetime(2024, 3, 8, 14, 30, 0)).renderChart()
+    stockHistory = StockHistory('Apple', datetime.datetime(2024, 3, 8, 14, 30, 0))
+    print(stockHistory["Open"])
+    # stockHistory.renderChart()
