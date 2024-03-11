@@ -5,7 +5,7 @@ parentDir = os.path.abspath(os.path.join(currentDir, '..'))
 sys.path.append(parentDir)
 
 
-import requests, spacy, csv, datetime
+import requests, spacy, datetime
 from bs4 import BeautifulSoup
 from stock.stockHistory import StockHistory
 from stringToDatetime import StringToDatetime
@@ -58,21 +58,6 @@ class Artical():
         doc = nlp(self.content)
         companies = [entity.text for entity in doc.ents if entity.label_ == "ORG"]
         return list(set(companies))
-    
-    def export(self, csvFile="mlData.csv"):
-        self.writeHeader(csvFile)
-
-        for company in self.releventCompanies:
-            stockHistory = self.getStockHistory(company)
-            if stockHistory != None:
-                with open(csvFile, "a", newline="") as file:
-                    csvWriter = csv.writer(file)
-                    csvWriter.writerow([company, stockHistory["Open"], stockHistory["Close"]])
-
-    def writeHeader(self, csvFile) -> None:        
-        with open(csvFile, "w", newline="") as file:
-            csvWriter = csv.writer(file)
-            csvWriter.writerow(["News Artical", "Stocks Open", "Stocks Close"])
 
     def getStockHistory(self, company:str) -> StockHistory:
         try:
