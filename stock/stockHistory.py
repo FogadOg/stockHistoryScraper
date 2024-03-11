@@ -1,7 +1,7 @@
 import yfinance as yf
 import datetime
 import mplfinance as mpf
-from stockSymbol import stockSymbole
+from .stockSymbol import stockSymbole
 
 class StockHistory():
     def __init__(self, companyName: str, articalPublishTime: datetime.datetime, timeFrameInHours = 1):
