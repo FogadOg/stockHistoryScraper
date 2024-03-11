@@ -1,6 +1,7 @@
 import requests
 from bs4 import BeautifulSoup
-from artical.artical import Artical
+from artical import Artical
+from export import Export
 
 class ArticalScraper():
     def __init__(self, url) -> None:
@@ -10,12 +11,11 @@ class ArticalScraper():
         articals = self.getAllArticals(soup, "RiverPlus-riverPlusContainer", "RiverPlusBreaker-container")
     
         hrefs = self.findArticalHref(articals, ".RiverHeadline-headline.RiverHeadline-hasThumbnail a")
-        # print("-----------hrefs: ",hrefs)
 
         articalObjects = self.createArticalObjects(hrefs)
 
         for articalObject in articalObjects:
-            print(articalObject)
+            Export(articalObject)
 
 
     def getAllArticals(self, soup, parentElementClass, excludeClass):
