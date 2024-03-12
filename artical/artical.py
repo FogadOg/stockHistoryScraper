@@ -92,9 +92,14 @@ class Artical():
     
     def getReplacementDate(self, dt):
         if dt.time() < datetime.datetime.strptime('09:30', '%H:%M').time():
-            return dt.replace(hour=9, minute=30, second=0, microsecond=0)
+            if self.isItPastTime(self, 10, 30):
+                return dt.replace(hour=9, minute=30, second=0, microsecond=0)
         return None
-        
+    
+    def isItPastTime(self, targetHour, targetMinute):
+        current_time = datetime.now().time()
+        target_time = datetime.strptime(f"{targetHour}:{targetMinute}", "%H:%M").time()
+        return current_time > target_time
 
     def __str__(self):
         return self.title
