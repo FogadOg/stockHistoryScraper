@@ -5,12 +5,15 @@ parentDir = os.path.abspath(os.path.join(currentDir, '..'))
 sys.path.append(parentDir)
 
 
-import requests, spacy, datetime
+import requests, spacy, datetime, csv
 from bs4 import BeautifulSoup
 from stock.stockHistory import StockHistory
 from stringToDatetime import StringToDatetime
 
+currentDir = os.path.dirname(os.path.abspath(__file__))
+parentDir = os.path.abspath(os.path.join(currentDir, '..'))
 
+sys.path.append(parentDir)
 nlp = spacy.load("en_core_web_sm")
 
 class Artical():
@@ -23,14 +26,14 @@ class Artical():
         self.content = self.getContent()
 
         self.releventCompanies = self.extractCompanies()
-    
+
     def getTitle(self) -> str:
         try:
             titleElement = self.soup.find(class_="ArticleHeader-headline")
 
             if titleElement == None:
                 return self.soup.find(class_="LiveBlogHeader-headline").text
-            
+
             return titleElement.text
         except:
             raise AttributeError("Not valid artical")
@@ -51,22 +54,34 @@ class Artical():
 
         for textContainer in textContainers:
             articalText += textContainer.text
-        
+
         return articalText
-    
+
     def extractCompanies(self):
         doc = nlp(self.content)
         companies = [entity.text for entity in doc.ents if entity.label_ == "ORG"]
         return list(set(companies))
 
+    def export(self, csvFile="mlData.csv"):
+
+        for company in self.releventCompanies:
+            history = self.getStockHistory(company)
+            if history != None:
+                with open(csvFile, "a", newline="") as file:
+                    csvWriter = csv.writer(file)
+                    csvWriter.writerow([self.content, history["Open"], history["Close"]])
+
+    def writeHeader(self, csvFile):        
+        with open(csvFile, "w", newline="") as file:
+            csvWriter = csv.writer(file)
+            csvWriter.writerow(["News Artical", "Open", "Close"])
+
     def getStockHistory(self, company:str) -> StockHistory:
         try:
             return StockHistory(company, self.publishTime)
         except KeyError:
-            print("skiped becuase company not found")
             return None
         except IndexError:
-            print("skiped artical was published after closing times")
             return None
 
     def __str__(self):
@@ -75,4 +90,4 @@ class Artical():
 
 if __name__ == "__main__":
     artical = Artical("https://www.cnbc.com/2024/03/07/stock-market-today-live-updates.html")
-    artical.export()
+    print(artical.publishTime)

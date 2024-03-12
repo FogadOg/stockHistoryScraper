@@ -15,7 +15,7 @@ class ArticalScraper():
         articalObjects = self.createArticalObjects(hrefs)
 
         for articalObject in articalObjects:
-            Export(articalObject)
+            articalObject.export()
 
 
     def getAllArticals(self, soup, parentElementClass, excludeClass):
