@@ -63,6 +63,8 @@ class Artical():
         return list(set(companies))
 
     def export(self, csvFile="mlData.csv"):
+        if self.doesFileExist(csvFile):
+            self.writeHeader(csvFile)
 
         for company in self.releventCompanies:
             history = self.getStockHistory(company)
@@ -70,6 +72,9 @@ class Artical():
                 with open(csvFile, "a", newline="") as file:
                     csvWriter = csv.writer(file)
                     csvWriter.writerow([self.content, history["Open"], history["Close"]])
+    
+    def doesFileExist(self, csvFile):
+        return not os.path.exists(csvFile)
 
     def writeHeader(self, csvFile):        
         with open(csvFile, "w", newline="") as file:
