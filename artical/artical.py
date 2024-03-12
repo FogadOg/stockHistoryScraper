@@ -23,7 +23,7 @@ class Artical():
 
         self.title = self.getTitle()
         self.publishTime = self.getPublishTime()
-        self.content = self.getContent()
+        self.content = self.title + self.getContent()
 
         self.releventCompanies = self.extractCompanies()
 
@@ -79,10 +79,17 @@ class Artical():
     def getStockHistory(self, company:str) -> StockHistory:
         try:
             return StockHistory(company, self.publishTime)
+        except IndexError:
+            replacmentDate = self.getReplacementDate(self.publishTime)
+            return StockHistory(company, replacmentDate)
         except KeyError:
             return None
-        except IndexError:
-            return None
+    
+    def getReplacementDate(self, dt):
+        if dt.time() < datetime.datetime.strptime('09:30', '%H:%M').time():
+            return dt.replace(hour=9, minute=30, second=0, microsecond=0)
+        return None
+        
 
     def __str__(self):
         return self.title
