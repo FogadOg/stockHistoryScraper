@@ -6,7 +6,7 @@ from .stockSymbol import stockSymbole
 class StockHistory():
     def __init__(self, companyName: str, articalPublishTime: datetime.datetime, timeFrameInHours = 1):
         self.companyName = companyName.lower()
-        self.articalPublishTime = articalPublishTime.replace(tzinfo=datetime.timezone(datetime.timedelta(hours=-5)))
+        self.articalPublishTime = articalPublishTime.replace(tzinfo=datetime.timezone(datetime.timedelta(hours=-4)))
         self.timeFrameInHours = timeFrameInHours
 
         tickerSymbol = self.getCompanysTicker()
@@ -43,6 +43,6 @@ class StockHistory():
 
 
 if __name__ == "__main__":
-    stockHistory = StockHistory('Apple', datetime.datetime(2024, 3, 11, 10, 00, 0))
+    stockHistory = StockHistory('Apple', datetime.datetime(2024, 3, 11, 12, 00, 0))
     print(stockHistory["Open"])
     stockHistory.renderChart()
