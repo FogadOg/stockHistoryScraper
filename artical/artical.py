@@ -62,7 +62,7 @@ class Artical():
         companies = [entity.text for entity in doc.ents if entity.label_ == "ORG"]
         return list(set(companies))
 
-    def export(self, csvFile="mlData.csv"):
+    def export(self, csvFile="stockData.csv"):
         if self.doesFileExist(csvFile):
             self.writeHeader(csvFile)
 
