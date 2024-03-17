@@ -1,7 +1,7 @@
 import sys
 import os
 import csv
-from artical.artical import Artical
+from artical import Artical
 
 class Export():
     def __init__(self, artical: Artical, fileName:str = "data"):
