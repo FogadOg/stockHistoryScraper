@@ -6,45 +6,43 @@ from utils.export import Export
 class Scraper():
     def __init__(self, url) -> None:
         response = requests.get(url)
-        soup = BeautifulSoup(response.text, "html.parser")
+        self.soup = BeautifulSoup(response.text, "html.parser")
 
-        articals = self.getAllArticals(soup, "RiverPlus-riverPlusContainer", "RiverPlusBreaker-container")
-    
-        hrefs = self.findArticalHref(articals, ".RiverHeadline-headline.RiverHeadline-hasThumbnail a")
-
-        articalObjects = self.createArticalObjects(hrefs)
-
-        for articalObject in articalObjects:
+        for articalObject in self._getArticalObject():
             Export(articalObject)
 
+    def _getArticalObject(self):
+        articals = self.getAllArticals()
+        hrefs = self.findArticalHref(articals)
+        return self._createArticalObjects(hrefs)
 
-    def getAllArticals(self, soup, parentElementClass, excludeClass):
+    def getAllArticals(self):
         articals = []
-        parentElements = soup.find_all(class_=parentElementClass)
+        parentElements = self.soup.find_all(class_="RiverPlus-riverPlusContainer")
 
         for parentElement in parentElements:
             for artical in parentElement.children:
-                if excludeClass not in artical.get('class', []):
+                if "RiverPlusBreaker-container" not in artical.get('class', []):
                     articals.append(artical)
         return articals
         
-    def findArticalHref(self, articals, cssSelector):
+    def findArticalHref(self, articals):
         hrefs = []
 
         for artical in articals:
-            aElements = artical.select(cssSelector)
+            aElements = artical.select(".RiverHeadline-headline.RiverHeadline-hasThumbnail a")
             
             for element in aElements:
                 href = element.get("href")
-                if self.isHrefValid(href):
+                if self._isHrefValid(href):
                     hrefs.append(href)
 
         return hrefs
     
-    def isHrefValid(self, href):
+    def _isHrefValid(self, href):
         return "https" in href
 
-    def createArticalObjects(self, hrefs):
+    def _createArticalObjects(self, hrefs):
         articalObjects =  []
         for href in hrefs:
             try:
