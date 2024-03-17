@@ -1,19 +1,9 @@
-import  sys, os
-
-currentDir = os.path.dirname(os.path.abspath(__file__))
-parentDir = os.path.abspath(os.path.join(currentDir, '..'))
-sys.path.append(parentDir)
-
-
 import requests, spacy, datetime, csv
 from bs4 import BeautifulSoup
 from stock.stockHistory import StockHistory
 from utils.stringToDatetime import StringToDatetime
 
-currentDir = os.path.dirname(os.path.abspath(__file__))
-parentDir = os.path.abspath(os.path.join(currentDir, '..'))
 
-sys.path.append(parentDir)
 nlp = spacy.load("en_core_web_sm")
 
 class Artical():
@@ -21,40 +11,12 @@ class Artical():
         response = requests.get(url)
         self.soup = BeautifulSoup(response.text, "html.parser")
 
-        self.title = self._getTitle()
-        self.publishTime = self._getPublishTime()
-        self.content = self.title + self._getContent()
+        self.title = self.getTitle()
+        # self.publishTime = self.getPublishTime()
+        self.publishTime = datetime.datetime(2024, 3, 11, 12, 30, 0)
+        self.content = self.title + self.getContent()
 
         self.releventCompanies = self._extractCompanies()
-
-    def _getTitle(self) -> str:
-        try:
-            titleElement = self.soup.find(class_="ArticleHeader-headline")
-
-            if titleElement == None:
-                return self.soup.find(class_="LiveBlogHeader-headline").text
-
-            return titleElement.text
-        except:
-            raise AttributeError("Not valid artical")
-
-    def _getPublishTime(self) -> datetime:
-        publishTime = self.soup.find('time').text   
-        time_parts = publishTime.split(' ', 1)
-
-        timeString = time_parts[1].upper()
-
-
-        return StringToDatetime(timeString).getDatetime()
-
-    def _getContent(self) -> str:
-        textContainers = self.soup.find_all(class_="group")
-        articalText = ""
-
-        for textContainer in textContainers:
-            articalText += textContainer.text
-
-        return articalText
 
     def _extractCompanies(self):
         doc = nlp(self.content)
