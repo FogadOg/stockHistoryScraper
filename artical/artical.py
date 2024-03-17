@@ -22,7 +22,7 @@ class Artical():
         self.soup = BeautifulSoup(response.text, "html.parser")
 
         self.title = self.getTitle()
-        self.publishTime = self.getPublishTime()
+        self.publishTime = datetime.datetime(2024, 3, 14, 12, 00, 0)
         self.content = self.title + self.getContent()
 
         self.releventCompanies = self.extractCompanies()
@@ -71,7 +71,7 @@ class Artical():
             if history != None:
                 with open(csvFile, "a", newline="") as file:
                     csvWriter = csv.writer(file)
-                    csvWriter.writerow([self.content, history["Open"], history["Close"]])
+                    csvWriter.writerow([history.getCompanysTicker(), self.content, history["Open"], history["Close"]])
     
     def doesFileExist(self, csvFile):
         return not os.path.exists(csvFile)
@@ -79,7 +79,7 @@ class Artical():
     def writeHeader(self, csvFile):        
         with open(csvFile, "w", newline="") as file:
             csvWriter = csv.writer(file)
-            csvWriter.writerow(["News Artical", "Open", "Close"])
+            csvWriter.writerow(["company", "News Artical", "Open", "Close"])
 
     def getStockHistory(self, company:str) -> StockHistory:
         try:
@@ -107,4 +107,4 @@ class Artical():
 
 if __name__ == "__main__":
     artical = Artical("https://www.cnbc.com/2024/03/07/stock-market-today-live-updates.html")
-    print(artical.publishTime)
+    artical.export()
