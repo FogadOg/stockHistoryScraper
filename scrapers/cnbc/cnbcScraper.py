@@ -5,7 +5,7 @@ parentDir = os.path.abspath(os.path.join(currentDir, '../../'))
 sys.path.append(parentDir)
 
 from scrapers.cnbc.cnbcArtical import CnbcArtical
-from scraper import Scraper
+from scrapers.scraper import Scraper
 
 class CnbcScraper(Scraper):
     def __init__(self, artical = CnbcArtical, url = "https://www.cnbc.com/world/?region=world") -> None:
@@ -39,6 +39,7 @@ class CnbcScraper(Scraper):
                     hrefs.append(href)
 
         return hrefs
+
 
 
 

@@ -6,7 +6,7 @@ sys.path.append(parentDir)
 
 import datetime
 from utils.stringToDatetime import StringToDatetime
-from artical import Artical
+from scrapers.artical import Artical
 
 
 
