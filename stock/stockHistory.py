@@ -13,10 +13,10 @@ class StockHistory():
 
         self.stockDataForTimeframe = self.getStockDataForTimeframe()
 
+
     def __getitem__(self, attribute):
-        data = self.stockDataForTimeframe.drop(columns=['Datetime'])[[attribute]]
-        data.reset_index(drop=True, inplace=True)
-        return [value for sublist in data.values.tolist() for value in sublist]
+        attributeData = self.stockDataForTimeframe[attribute]
+        return attributeData.values
 
     def getCompanysTicker(self):
         try:
@@ -42,5 +42,5 @@ class StockHistory():
 
 if __name__ == "__main__":
     stockHistory = StockHistory('Apple', datetime.datetime(2024, 3, 11, 12, 30, 0))
-    print(stockHistory)
+    print(stockHistory["Open"])
 
