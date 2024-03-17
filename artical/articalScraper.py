@@ -1,7 +1,7 @@
 import requests
 from bs4 import BeautifulSoup
 from artical import Artical
-from export import Export
+from utils.export import Export
 
 class ArticalScraper():
     def __init__(self, url) -> None:

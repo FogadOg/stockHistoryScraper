@@ -8,7 +8,7 @@ sys.path.append(parentDir)
 import requests, spacy, datetime, csv
 from bs4 import BeautifulSoup
 from stock.stockHistory import StockHistory
-from stringToDatetime import StringToDatetime
+from utils.stringToDatetime import StringToDatetime
 
 currentDir = os.path.dirname(os.path.abspath(__file__))
 parentDir = os.path.abspath(os.path.join(currentDir, '..'))
