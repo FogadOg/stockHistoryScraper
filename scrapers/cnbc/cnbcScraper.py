@@ -4,11 +4,11 @@ currentDir = os.path.dirname(os.path.abspath(__file__))
 parentDir = os.path.abspath(os.path.join(currentDir, '../../'))
 sys.path.append(parentDir)
 
-from scrapers.cnbc.artical import Artical
+from scrapers.cnbc.cnbcArtical import CnbcArtical
 from scraper import Scraper
 
 class CnbcScraper(Scraper):
-    def __init__(self, artical = Artical, url = "https://www.cnbc.com/world/?region=world") -> None:
+    def __init__(self, artical = CnbcArtical, url = "https://www.cnbc.com/world/?region=world") -> None:
         super().__init__(artical, url)
 
 
