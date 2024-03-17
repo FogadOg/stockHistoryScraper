@@ -1,9 +1,8 @@
 import requests
 from bs4 import BeautifulSoup
-from artical import Artical
 from utils.export import Export
 
-class Scraper():
+class Scraper(object):
     def __init__(self, artical, url) -> None:
         self.articalObject = artical
 
