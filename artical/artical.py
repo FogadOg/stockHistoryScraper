@@ -21,13 +21,13 @@ class Artical():
         response = requests.get(url)
         self.soup = BeautifulSoup(response.text, "html.parser")
 
-        self.title = self.getTitle()
-        self.publishTime = datetime.datetime(2024, 3, 14, 12, 00, 0)
-        self.content = self.title + self.getContent()
+        self.title = self._getTitle()
+        self.publishTime = self._getPublishTime()
+        self.content = self.title + self._getContent()
 
-        self.releventCompanies = self.extractCompanies()
+        self.releventCompanies = self._extractCompanies()
 
-    def getTitle(self) -> str:
+    def _getTitle(self) -> str:
         try:
             titleElement = self.soup.find(class_="ArticleHeader-headline")
 
@@ -38,7 +38,7 @@ class Artical():
         except:
             raise AttributeError("Not valid artical")
 
-    def getPublishTime(self) -> datetime:
+    def _getPublishTime(self) -> datetime:
         publishTime = self.soup.find('time').text   
         time_parts = publishTime.split(' ', 1)
 
@@ -48,7 +48,7 @@ class Artical():
         return StringToDatetime(timeString).getDatetime()
 
 
-    def getContent(self) -> str:
+    def _getContent(self) -> str:
         textContainers = self.soup.find_all(class_="group")
         articalText = ""
 
@@ -57,14 +57,14 @@ class Artical():
 
         return articalText
 
-    def extractCompanies(self):
+    def _extractCompanies(self):
         doc = nlp(self.content)
         companies = [entity.text for entity in doc.ents if entity.label_ == "ORG"]
         return list(set(companies))
 
     def export(self, csvFile="stockData.csv"):
-        if self.doesFileExist(csvFile):
-            self.writeHeader(csvFile)
+        if self._doesFileExist(csvFile):
+            self._writeHeader(csvFile)
 
         for company in self.releventCompanies:
             history = self.getStockHistory(company)
@@ -73,10 +73,10 @@ class Artical():
                     csvWriter = csv.writer(file)
                     csvWriter.writerow([history.getCompanysTicker(), self.content, history["Open"], history["Close"]])
     
-    def doesFileExist(self, csvFile):
+    def _doesFileExist(self, csvFile):
         return not os.path.exists(csvFile)
 
-    def writeHeader(self, csvFile):        
+    def _writeHeader(self, csvFile):        
         with open(csvFile, "w", newline="") as file:
             csvWriter = csv.writer(file)
             csvWriter.writerow(["company", "News Artical", "Open", "Close"])
@@ -92,14 +92,14 @@ class Artical():
     
     def getReplacementDate(self, dt):
         if dt.time() < datetime.datetime.strptime('09:30', '%H:%M').time():
-            if self.isItPastTime(self, 10, 30):
+            if self._isItPastTime(self, 10, 30):
                 return dt.replace(hour=9, minute=30, second=0, microsecond=0)
         return None
     
-    def isItPastTime(self, targetHour, targetMinute):
-        current_time = datetime.now().time()
-        target_time = datetime.strptime(f"{targetHour}:{targetMinute}", "%H:%M").time()
-        return current_time > target_time
+    def _isItPastTime(self, targetHour, targetMinute):
+        currentTime = datetime.now().time()
+        targetTime = datetime.strptime(f"{targetHour}:{targetMinute}", "%H:%M").time()
+        return currentTime > targetTime
 
     def __str__(self):
         return self.title
