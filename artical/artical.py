@@ -85,12 +85,12 @@ class Artical():
         try:
             return StockHistory(company, self.publishTime)
         except IndexError:
-            replacmentDate = self.getReplacementDate(self.publishTime)
+            replacmentDate = self._getReplacementDate(self.publishTime)
             return StockHistory(company, replacmentDate)
         except KeyError:
             return None
     
-    def getReplacementDate(self, dt):
+    def _getReplacementDate(self, dt):
         if dt.time() < datetime.datetime.strptime('09:30', '%H:%M').time():
             if self._isItPastTime(self, 10, 30):
                 return dt.replace(hour=9, minute=30, second=0, microsecond=0)
