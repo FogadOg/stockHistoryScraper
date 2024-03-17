@@ -9,22 +9,22 @@ class StockHistory():
         self.articalPublishTime = articalPublishTime.replace(tzinfo=datetime.timezone(datetime.timedelta(hours=-4)))
         self.timeFrameInHours = timeFrameInHours
 
-        self.tickerSymbol = self.getCompanysTicker()
+        self.tickerSymbol = self._getCompanysTicker()
 
-        self.stockDataForTimeframe = self.getStockDataForTimeframe()
+        self.stockDataForTimeframe = self._getStockDataForTimeframe()
 
 
     def __getitem__(self, attribute):
         attributeData = self.stockDataForTimeframe[attribute]
         return attributeData.values
 
-    def getCompanysTicker(self):
+    def _getCompanysTicker(self):
         try:
             return stockSymbole[self.companyName]
         except KeyError:
             raise KeyError(f"company {self.companyName} not found in dictonary")
 
-    def getStockDataForTimeframe(self):
+    def _getStockDataForTimeframe(self):
         marketOpenHour = 9
         marketCloseHour = 15
 
