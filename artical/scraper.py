@@ -3,7 +3,7 @@ from bs4 import BeautifulSoup
 from artical import Artical
 from utils.export import Export
 
-class ArticalScraper():
+class Scraper():
     def __init__(self, url) -> None:
         response = requests.get(url)
         soup = BeautifulSoup(response.text, "html.parser")
@@ -58,4 +58,4 @@ class ArticalScraper():
 
 
 if __name__ == "__main__":
-    scraper = ArticalScraper("https://www.cnbc.com/world/?region=world")
+    scraper = Scraper("https://www.cnbc.com/world/?region=world")
