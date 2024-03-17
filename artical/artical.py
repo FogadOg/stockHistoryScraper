@@ -47,7 +47,6 @@ class Artical():
 
         return StringToDatetime(timeString).getDatetime()
 
-
     def _getContent(self) -> str:
         textContainers = self.soup.find_all(class_="group")
         articalText = ""
@@ -61,25 +60,6 @@ class Artical():
         doc = nlp(self.content)
         companies = [entity.text for entity in doc.ents if entity.label_ == "ORG"]
         return list(set(companies))
-
-    def export(self, csvFile="stockData.csv"):
-        if self._doesFileExist(csvFile):
-            self._writeHeader(csvFile)
-
-        for company in self.releventCompanies:
-            history = self.getStockHistory(company)
-            if history != None:
-                with open(csvFile, "a", newline="") as file:
-                    csvWriter = csv.writer(file)
-                    csvWriter.writerow([history.getCompanysTicker(), self.content, history["Open"], history["Close"]])
-    
-    def _doesFileExist(self, csvFile):
-        return not os.path.exists(csvFile)
-
-    def _writeHeader(self, csvFile):        
-        with open(csvFile, "w", newline="") as file:
-            csvWriter = csv.writer(file)
-            csvWriter.writerow(["company", "News Artical", "Open", "Close"])
 
     def getStockHistory(self, company:str) -> StockHistory:
         try:
