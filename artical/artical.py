@@ -65,20 +65,24 @@ class Artical():
         try:
             return StockHistory(company, self.publishTime)
         except IndexError:
-            replacmentDate = self._getReplacementDate(self.publishTime)
-            return StockHistory(company, replacmentDate)
+            try:
+                replacmentDate = self._getReplacementDate(self.publishTime)
+                return StockHistory(company, replacmentDate)
+            except:
+                pass
         except KeyError:
             return None
     
     def _getReplacementDate(self, dt):
         if dt.time() < datetime.datetime.strptime('09:30', '%H:%M').time():
-            if self._isItPastTime(self, 10, 30):
+            if self._isItPastTime(self):
                 return dt.replace(hour=9, minute=30, second=0, microsecond=0)
-        return None
+            
+        raise IndexError(f"articel was published {self.publishTime} which is after closing time")
     
-    def _isItPastTime(self, targetHour, targetMinute):
-        currentTime = datetime.now().time()
-        targetTime = datetime.strptime(f"{targetHour}:{targetMinute}", "%H:%M").time()
+    def _isItPastTime(self, targetHour: int = 10, targetMinute: int = 30):
+        currentTime = datetime.datetime.now().time()
+        targetTime = datetime.datetime.strptime(f"{targetHour}:{targetMinute}", "%H:%M").time()
         return currentTime > targetTime
 
     def __str__(self):
@@ -87,4 +91,4 @@ class Artical():
 
 if __name__ == "__main__":
     artical = Artical("https://www.cnbc.com/2024/03/07/stock-market-today-live-updates.html")
-    artical.export()
+
