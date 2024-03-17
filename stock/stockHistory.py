@@ -22,7 +22,7 @@ class StockHistory():
         try:
             return stockSymbole[self.companyName]
         except KeyError:
-            raise KeyError("company not found in dictonary")
+            raise KeyError(f"company {self.companyName} not found in dictonary")
 
     def getStockDataForTimeframe(self):
         marketOpenHour = 9
