@@ -1,4 +1,5 @@
-from scraper import Scraper
+from scrapers.scraper import Scraper
+from scrapers.cnbc.cnbcScraper import CnbcScraper
 
 subclasses = Scraper.__subclasses__()
 
