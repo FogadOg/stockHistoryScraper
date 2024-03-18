@@ -47,7 +47,7 @@ stockSymbole = {
     "microsoft": "msft",
     "amazon": "amzn",
     "alphabet": "googl",
-    "facebook": "fb",
+    "facebook": "meta",
     "tesla": "tsla",
     "johnson & johnson": "jnj",
     "jpmorgan chase": "jpm",
