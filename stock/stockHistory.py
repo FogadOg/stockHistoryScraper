@@ -12,6 +12,9 @@ class StockHistory():
         self.tickerSymbol = self._getCompanysTicker()
 
         self.stockDataForTimeframe = self._getStockDataForTimeframe()
+        if len(self.stockDataForTimeframe) == 0:
+            raise KeyError(f"Stock symbol for company {self.companyName} not found or has been delisted.")
+
 
 
     def __getitem__(self, attribute):
@@ -26,16 +29,17 @@ class StockHistory():
 
     def _getStockDataForTimeframe(self):
         marketOpenHour = 9
-        marketCloseHour = 15
-
+        marketCloseHour = 14
 
         if marketOpenHour <= self.articalPublishTime.hour < marketCloseHour:
-            endTime = self.articalPublishTime  + datetime.timedelta(hours=self.timeFrameInHours)
+            endTime = self.articalPublishTime + datetime.timedelta(hours=self.timeFrameInHours)
 
             data = yf.download(self.tickerSymbol, period='1d', interval='1m', start=self.articalPublishTime, end=endTime)
             return data
-        raise IndexError(f"You're trying to get data for after market closing hours. Your time is {self.articalPublishTime}")
+        else:
+            raise IndexError(f"You're trying to get data for after market closing hours. Your time is {self.articalPublishTime}")
 
+    
     def renderChart(self):
         mpf.plot(self.stockDataForTimeframe, type='candle', style='charles', volume=True, title=self.companyName)
 
@@ -43,4 +47,3 @@ class StockHistory():
 if __name__ == "__main__":
     stockHistory = StockHistory('Apple', datetime.datetime(2024, 3, 11, 12, 30, 0))
     print(stockHistory["Open"])
-
