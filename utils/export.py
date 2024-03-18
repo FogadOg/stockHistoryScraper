@@ -1,7 +1,7 @@
 import sys
 import os
 import csv
-from artical import Artical
+from scrapers.artical import Artical
 
 class Export():
     def __init__(self, artical: Artical, fileName:str = "data"):
