@@ -32,7 +32,7 @@ class Artical():
                 return StockHistory(company, replacmentDate)
             except:
                 pass
-        except KeyError:
+        except:
             return None
     
     def _getReplacementDate(self, dt):
