@@ -4,34 +4,34 @@ currentDir = os.path.dirname(os.path.abspath(__file__))
 parentDir = os.path.abspath(os.path.join(currentDir, '../../'))
 sys.path.append(parentDir)
 
-from scrapers.cnbc.cnbcArtical import CnbcArtical
+from scrapers.cnbc.cnbcArticle import CnbcArticle
 from scrapers.scraper import Scraper
 
 class CnbcScraper(Scraper):
-    def __init__(self, artical = CnbcArtical, url = "https://www.cnbc.com/world/?region=world") -> None:
-        super().__init__(artical, url)
+    def __init__(self, article = CnbcArticle, url = "https://www.cnbc.com/world/?region=world") -> None:
+        super().__init__(article, url)
 
 
-    def _getArticalObject(self):
-        articals = self.getAllArticals()
-        hrefs = self.findArticalHref(articals)
-        return self._createArticalObjects(hrefs)
+    def _getArticleObject(self):
+        articles = self.getAllArticles()
+        hrefs = self.findArticleHref(articles)
+        return self._createArticleObjects(hrefs)
 
-    def getAllArticals(self):
-        articals = []
+    def getAllArticles(self):
+        articles = []
         parentElements = self.soup.find_all(class_="RiverPlus-riverPlusContainer")
 
         for parentElement in parentElements:
-            for artical in parentElement.children:
-                if "RiverPlusBreaker-container" not in artical.get('class', []):
-                    articals.append(artical)
-        return articals
+            for article in parentElement.children:
+                if "RiverPlusBreaker-container" not in article.get('class', []):
+                    articles.append(article)
+        return articles
         
-    def findArticalHref(self, articals):
+    def findArticleHref(self, articles):
         hrefs = []
 
-        for artical in articals:
-            aElements = artical.select(".RiverHeadline-headline.RiverHeadline-hasThumbnail a")
+        for article in articles:
+            aElements = article.select(".RiverHeadline-headline.RiverHeadline-hasThumbnail a")
             
             for element in aElements:
                 href = element.get("href")

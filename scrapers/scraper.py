@@ -3,30 +3,30 @@ from bs4 import BeautifulSoup
 from utils.export import Export
 
 class Scraper(object):
-    def __init__(self, artical, url) -> None:
-        self.articalObject = artical
+    def __init__(self, article, url) -> None:
+        self.articleObject = article
 
         response = requests.get(url)
         self.soup = BeautifulSoup(response.text, "html.parser")
 
-        for articalObject in self._getArticalObject():
-            Export(articalObject)
+        for articleObject in self._getArticleObject():
+            Export(articleObject)
 
-    def _getArticalObject(self):
-        articals = self.getAllArticals()
-        hrefs = self.findArticalHref(articals)
-        return self._createArticalObjects(hrefs)
+    def _getArticleObject(self):
+        articles = self.getAllArticles()
+        hrefs = self.findArticleHref(articles)
+        return self._createArticleObjects(hrefs)
     
     def _isHrefValid(self, href):
         return "https" in href
 
-    def _createArticalObjects(self, hrefs):
-        articalObjects =  []
+    def _createArticleObjects(self, hrefs):
+        articleObjects =  []
         for href in hrefs:
             try:
-                articalObject = self.articalObject(href)
-                articalObjects.append(articalObject)
+                articleObject = self.articleObject(href)
+                articleObjects.append(articleObject)
             except AttributeError:
                 pass
-        return articalObjects
+        return articleObjects
 

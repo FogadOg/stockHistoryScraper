@@ -6,12 +6,12 @@ sys.path.append(parentDir)
 
 import datetime
 from utils.stringToDatetime import StringToDatetime
-from scrapers.artical import Artical
+from scrapers.article import Article
 
 
 
 
-class YahooArtical(Artical):
+class YahooArticle(Article):
     def __init__(self, url):
         super().__init__(url)
 
@@ -35,4 +35,4 @@ class YahooArtical(Artical):
 
 
 if __name__ == "__main__":
-    artical = YahooArtical("https://finance.yahoo.com/news/want-leave-assets-heirs-irs-105000681.html")
+    article = YahooArticle("https://finance.yahoo.com/news/want-leave-assets-heirs-irs-105000681.html")

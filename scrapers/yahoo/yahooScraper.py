@@ -4,34 +4,34 @@ currentDir = os.path.dirname(os.path.abspath(__file__))
 parentDir = os.path.abspath(os.path.join(currentDir, '../../'))
 sys.path.append(parentDir)
 
-from scrapers.yahoo.yahooArtical import YahooArtical
+from scrapers.yahoo.yahooArticle import YahooArticle
 from scrapers.scraper import Scraper
 
 class YahooScraper(Scraper):
-    def __init__(self, artical = YahooArtical, url = "https://finance.yahoo.com") -> None:
-        super().__init__(artical, url)
+    def __init__(self, article = YahooArticle, url = "https://finance.yahoo.com") -> None:
+        super().__init__(article, url)
 
 
-    def _getArticalObject(self):
-        articals = self.getAllArticals()
-        hrefs = self.findArticalHref(articals)
-        return self._createArticalObjects(hrefs)
+    def _getArticleObject(self):
+        articles = self.getAllArticles()
+        hrefs = self.findArticleHref(articles)
+        return self._createArticleObjects(hrefs)
 
-    def getAllArticals(self):
-        articals = []
+    def getAllArticles(self):
+        articles = []
         parentElements = self.soup.find_all(class_="My(0) P(0) Wow(bw) Ov(h)")
 
         for parentElement in parentElements:
-            for artical in parentElement.children:
-                articals.append(artical)
-        return articals
+            for article in parentElement.children:
+                articles.append(article)
+        return articles
         
-    def findArticalHref(self, articals):
+    def findArticleHref(self, articles):
         hrefs = []
         
-        for artical in articals:
+        for article in articles:
             try:
-                aElement = artical.find('a', class_='js-content-viewer')
+                aElement = article.find('a', class_='js-content-viewer')
 
                 href = aElement["href"]
                 href = "https://finance.yahoo.com"+href
