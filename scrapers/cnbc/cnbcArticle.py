@@ -6,12 +6,12 @@ sys.path.append(parentDir)
 
 import datetime
 from utils.stringToDatetime import StringToDatetime
-from scrapers.artical import Artical
+from scrapers.article import Article
 
 
 
 
-class CnbcArtical(Artical):
+class CnbcArticle(Article):
     def __init__(self, url):
         super().__init__(url)
 
@@ -24,7 +24,7 @@ class CnbcArtical(Artical):
 
             return titleElement.text
         except:
-            raise AttributeError("Not valid artical")
+            raise AttributeError("Not valid article")
 
     def getPublishTime(self) -> datetime:
         publishTime = self.soup.find('time').text   
@@ -33,18 +33,18 @@ class CnbcArtical(Artical):
         timeString = time_parts[1].upper()
 
 
-        return StringToDatetime(timeString).getDatetime()
+        return StringToDatetime(timeString).getDatetimeCnbc()
 
     def getContent(self) -> str:
         textContainers = self.soup.find_all(class_="group")
-        articalText = ""
+        articleText = ""
 
         for textContainer in textContainers:
-            articalText += textContainer.text
+            articleText += textContainer.text
 
-        return articalText
+        return articleText
 
 
 if __name__ == "__main__":
-    artical = Artical("https://www.cnbc.com/2024/03/07/stock-market-today-live-updates.html")
+    article = Article("https://www.cnbc.com/2024/03/07/stock-market-today-live-updates.html")
 

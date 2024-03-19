@@ -4,9 +4,9 @@ import mplfinance as mpf
 from .stockSymbol import stockSymbole
 
 class StockHistory():
-    def __init__(self, companyName: str, articalPublishTime: datetime.datetime, timeFrameInHours = 1):
+    def __init__(self, companyName: str, articlePublishTime: datetime.datetime, timeFrameInHours = 1):
         self.companyName = companyName.lower()
-        self.articalPublishTime = articalPublishTime.replace(tzinfo=datetime.timezone(datetime.timedelta(hours=-4)))
+        self.articlePublishTime = articlePublishTime.replace(tzinfo=datetime.timezone(datetime.timedelta(hours=-4)))
         self.timeFrameInHours = timeFrameInHours
 
         self.tickerSymbol = self._getCompanysTicker()
@@ -31,13 +31,13 @@ class StockHistory():
         marketOpenHour = 9
         marketCloseHour = 14
 
-        if marketOpenHour <= self.articalPublishTime.hour < marketCloseHour:
-            endTime = self.articalPublishTime + datetime.timedelta(hours=self.timeFrameInHours)
+        if marketOpenHour <= self.articlePublishTime.hour < marketCloseHour:
+            endTime = self.articlePublishTime + datetime.timedelta(hours=self.timeFrameInHours)
 
-            data = yf.download(self.tickerSymbol, period='1d', interval='1m', start=self.articalPublishTime, end=endTime)
+            data = yf.download(self.tickerSymbol, period='1d', interval='1m', start=self.articlePublishTime, end=endTime)
             return data
         else:
-            raise IndexError(f"You're trying to get data for after market closing hours. Your time is {self.articalPublishTime}")
+            raise IndexError(f"You're trying to get data for after market closing hours. Your time is {self.articlePublishTime}")
 
     
     def renderChart(self):

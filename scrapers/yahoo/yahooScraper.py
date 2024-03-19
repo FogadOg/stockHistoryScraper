@@ -4,11 +4,11 @@ currentDir = os.path.dirname(os.path.abspath(__file__))
 parentDir = os.path.abspath(os.path.join(currentDir, '../../'))
 sys.path.append(parentDir)
 
-from scrapers.cnbc.cnbcArticle import CnbcArticle
+from scrapers.yahoo.yahooArticle import YahooArticle
 from scrapers.scraper import Scraper
 
-class CnbcScraper(Scraper):
-    def __init__(self, article = CnbcArticle, url = "https://www.cnbc.com/world/?region=world") -> None:
+class YahooScraper(Scraper):
+    def __init__(self, article = YahooArticle, url = "https://finance.yahoo.com") -> None:
         super().__init__(article, url)
 
 
@@ -19,24 +19,27 @@ class CnbcScraper(Scraper):
 
     def getAllArticles(self):
         articles = []
-        parentElements = self.soup.find_all(class_="RiverPlus-riverPlusContainer")
+        parentElements = self.soup.find_all(class_="My(0) P(0) Wow(bw) Ov(h)")
 
         for parentElement in parentElements:
             for article in parentElement.children:
-                if "RiverPlusBreaker-container" not in article.get('class', []):
-                    articles.append(article)
+                articles.append(article)
         return articles
         
     def findArticleHref(self, articles):
         hrefs = []
-
+        
         for article in articles:
-            aElements = article.select(".RiverHeadline-headline.RiverHeadline-hasThumbnail a")
-            
-            for element in aElements:
-                href = element.get("href")
+            try:
+                aElement = article.find('a', class_='js-content-viewer')
+
+                href = aElement["href"]
+                href = "https://finance.yahoo.com"+href
+
                 if self._isHrefValid(href):
                     hrefs.append(href)
+            except:
+                pass
 
         return hrefs
 
@@ -45,4 +48,4 @@ class CnbcScraper(Scraper):
 
 
 if __name__ == "__main__":
-    scraper = CnbcScraper()
+    scraper = YahooScraper()

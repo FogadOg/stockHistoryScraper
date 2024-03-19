@@ -6,7 +6,7 @@ from utils.stringToDatetime import StringToDatetime
 
 nlp = spacy.load("en_core_web_sm")
 
-class Artical():
+class Article():
     def __init__(self, url):
         response = requests.get(url)
         self.soup = BeautifulSoup(response.text, "html.parser")
@@ -52,5 +52,5 @@ class Artical():
 
 
 if __name__ == "__main__":
-    artical = Artical("https://www.cnbc.com/2024/03/07/stock-market-today-live-updates.html")
+    article = Article("https://www.cnbc.com/2024/03/07/stock-market-today-live-updates.html")
 

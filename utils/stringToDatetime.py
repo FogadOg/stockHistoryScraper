@@ -11,12 +11,20 @@ class StringToDatetime:
             'SEP': 9, 'OCT': 10, 'NOV': 11, 'DEC': 12
         }
 
-    def getDatetime(self) -> datetime:
+    def getDatetimeCnbc(self) -> datetime:
         month, day, year, hour, minute, amPm = self._getDate()
         if amPm == "PM" and hour != 12:
             hour += 12
 
         return datetime(year, month, day, hour, minute)
+    
+    def getDatetimeYahoo(self) -> datetime:
+        dateFormat = "%B %d, %Y at %I:%M %p"
+
+        parsed_date = datetime.strptime(self.inputString, dateFormat)
+
+        formatted_date = parsed_date.strftime("%a, %B %d, %Y at %I:%M %p GMT%z")
+
     
 
     def _getDate(self) -> tuple[int, int, int, int, int, str]:
