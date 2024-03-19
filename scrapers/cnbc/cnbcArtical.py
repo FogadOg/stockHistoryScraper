@@ -33,7 +33,7 @@ class CnbcArtical(Artical):
         timeString = time_parts[1].upper()
 
 
-        return StringToDatetime(timeString).getDatetime()
+        return StringToDatetime(timeString).getDatetimeCnbc()
 
     def getContent(self) -> str:
         textContainers = self.soup.find_all(class_="group")
