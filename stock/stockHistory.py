@@ -13,7 +13,7 @@ class StockHistory():
 
         self.stockDataForTimeframe = self._getStockDataForTimeframe()
         if len(self.stockDataForTimeframe) == 0:
-            raise KeyError(f"Stock symbol for company {self.companyName} not found or has been delisted.")
+            raise KeyError(f'Stock symbol for company "{self.companyName}" not found or has been delisted.')
 
 
 
