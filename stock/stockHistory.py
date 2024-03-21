@@ -13,7 +13,7 @@ class StockHistory():
 
         self.stockDataForTimeframe = self._getStockDataForTimeframe()
         if len(self.stockDataForTimeframe) == 0:
-            raise KeyError(f'Stock symbol for company "{self.companyName}" not found or has been delisted.')
+            raise KeyError(f'Ticker for company "{self.companyName}" not found might be due to delisting.')
 
 
 
@@ -25,7 +25,7 @@ class StockHistory():
         try:
             return stockSymbole[self.companyName]
         except KeyError:
-            raise KeyError(f"company {self.companyName} not found in dictonary")
+            raise KeyError(f'"{self.companyName}" company ticker not found')
 
     def _getStockDataForTimeframe(self):
         marketOpenHour = 9
