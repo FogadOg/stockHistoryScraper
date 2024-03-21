@@ -20,10 +20,8 @@ class StringToDatetime:
     
     def getDatetimeYahoo(self) -> str:
         dateFormat = "%B %d, %Y at %I:%M %p"
-        parsed_date = datetime.strptime(self.inputString, dateFormat)
-        formatted_date = parsed_date.strftime("%Y-%m-%d %H:%M:%S")
-
-        return formatted_date
+        parseddate = datetime.strptime(self.inputString, dateFormat)
+        return parseddate
     
 
     def _getDate(self) -> tuple[int, int, int, int, int, str]:
