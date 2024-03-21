@@ -12,10 +12,6 @@ class CnbcScraper(Scraper):
         super().__init__(article, url)
 
 
-    def _getArticleObject(self):
-        articles = self.getAllArticles()
-        hrefs = self.findArticleHref(articles)
-        return self._createArticleObjects(hrefs)
 
     def getAllArticles(self):
         articles = []

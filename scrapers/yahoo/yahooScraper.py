@@ -12,11 +12,6 @@ class YahooScraper(Scraper):
         super().__init__(article, url)
 
 
-    def _getArticleObject(self):
-        articles = self.getAllArticles()
-        hrefs = self.findArticleHref(articles)
-        return self._createArticleObjects(hrefs)
-
     def getAllArticles(self):
         articles = []
         parentElements = self.soup.find_all(class_="My(0) P(0) Wow(bw) Ov(h)")
