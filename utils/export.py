@@ -17,8 +17,10 @@ class Export():
             history = self.article.getStockHistory(company)
             if history != None:
                 with open(csvFile, "a", newline="") as file:
+                    openData = '[' +','.join(map(str, history["Open"])) + ']'
+                    closeData = '[' +','.join(map(str, history["Close"])) + ']'
                     csvWriter = csv.writer(file)
-                    csvWriter.writerow([history.tickerSymbol, self.article.content, history["Open"], history["Close"]])
+                    csvWriter.writerow([history.tickerSymbol, self.article.content, openData, closeData])
     
     def _doesFileExist(self, csvFile):
         return not os.path.exists(csvFile)
