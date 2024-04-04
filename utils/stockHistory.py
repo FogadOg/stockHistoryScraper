@@ -1,8 +1,15 @@
+import  sys, os
+
+currentDir = os.path.dirname(os.path.abspath(__file__))
+parentDir = os.path.abspath(os.path.join(currentDir, '../'))
+sys.path.append(parentDir)
+
+
 import yfinance as yf
 import datetime
 import mplfinance as mpf
-from .stockSymbol import stockSymbole
-from .productCompanyTicker import productsTickers
+from utils.dependencies.stockSymbol import stockSymbole
+from utils.dependencies.productTicker import productToCompanyTicker
 
 class StockHistory():
     def __init__(self, companyName: str, articlePublishTime: datetime.datetime, timeFrameInHours = 5):

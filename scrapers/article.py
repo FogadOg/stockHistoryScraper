@@ -1,6 +1,6 @@
 import requests, spacy, datetime, csv
 from bs4 import BeautifulSoup
-from stock.stockHistory import StockHistory
+from utils.stockHistory import StockHistory
 from utils.stringToDatetime import StringToDatetime
 
 
