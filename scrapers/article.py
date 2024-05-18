@@ -25,13 +25,16 @@ class Article():
         return list(set(companies))
 
     def getStockHistory(self, company:str) -> StockHistory:
-        if self.isWeekend():
-            daysToAdd = 7 - self.publishTime.weekday()
-            nextMonday = self.publishTime + datetime.timedelta(days=daysToAdd)
-            newDate = nextMonday.replace(hour=9, minute=30)
+        try:
+            if self.isWeekend():
+                daysToAdd = 7 - self.publishTime.weekday()
+                nextMonday = self.publishTime + datetime.timedelta(days=daysToAdd)
+                newDate = nextMonday.replace(hour=9, minute=30)
 
-            return StockHistory(company, newDate)
-        return StockHistory(company, self.publishTime)
+                return StockHistory(company, newDate)
+            return StockHistory(company, self.publishTime)
+        except Exception as e:
+            print("ERROR: ", e)
     
     def isWeekend(self) -> bool:
         return self.publishTime.weekday() >= 5
