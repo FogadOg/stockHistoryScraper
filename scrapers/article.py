@@ -17,7 +17,7 @@ class Article():
         # self.publishTime = datetime.datetime(2024, 3, 11, 12, 30, 0)
         self.content = self.title + self.getContent()
 
-        self.releventCompanies = self._extractCompanies()
+        self.releventCompanies = ["apple"]
 
     def _extractCompanies(self):
         doc = nlp(self.content)
@@ -25,28 +25,24 @@ class Article():
         return list(set(companies))
 
     def getStockHistory(self, company:str) -> StockHistory:
-        try:
-            return StockHistory(company, self.publishTime)
-        except IndexError:
-            try:
-                replacmentDate = self._getReplacementDate(self.publishTime)
-                return StockHistory(company, replacmentDate)
-            except:
-                pass
-        except:
-            return None
+        replacmentDate = self._getReplacementDate(self.publishTime)
+        return StockHistory(company, replacmentDate)
     
-    def _getReplacementDate(self, dt):
-        if dt.time() < datetime.datetime.strptime('09:30', '%H:%M').time():
-            if self._isItPastTime(self):
-                return dt.replace(hour=9, minute=30, second=0, microsecond=0)
+    def _getReplacementDate(self, objectTime: datetime):
+        if self._isItPastTime() == False:
+            return objectTime.replace(hour=9, minute=30, second=0, microsecond=0)
+        elif self._isItPastTime(16, 0):
+            newTime = objectTime.replace(hour=9, minute=30, second=0, microsecond=0)
+            return newTime + datetime.timedelta(days=1)
+        
+        return objectTime
             
-        raise IndexError(f"articel was published {self.publishTime} which is after closing time")
     
-    def _isItPastTime(self, targetHour: int = 10, targetMinute: int = 30):
-        currentTime = datetime.datetime.now().time()
-        targetTime = datetime.datetime.strptime(f"{targetHour}:{targetMinute}", "%H:%M").time()
-        return currentTime > targetTime
+    def _isItPastTime(self, specificHour: int = 9, specificMinute: int = 30):
+        hour = self.publishTime.hour
+        minute = self.publishTime.minute
+
+        return (hour, minute) > (specificHour, specificMinute)
 
     def __str__(self):
         return self.title
