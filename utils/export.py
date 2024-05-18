@@ -20,7 +20,7 @@ class Export():
                     openData = '[' +','.join(map(str, history["Open"])) + ']'
                     closeData = '[' +','.join(map(str, history["Close"])) + ']'
                     csvWriter = csv.writer(file)
-                    csvWriter.writerow([history.tickerSymbol, self.article.content, openData, closeData])
+                    csvWriter.writerow([history.companyName, self.article.content, openData, closeData])
     
     def _doesFileExist(self, csvFile):
         return not os.path.exists(csvFile)
