@@ -15,9 +15,9 @@ class Article():
         self.timeZone = 'US/Eastern'
         self.publishTime = self.getPublishTime()
         # self.publishTime = datetime.datetime(2024, 3, 11, 12, 30, 0)
-        self.content = self.title + self.getContent()
+        self.content = self.title + " " + self.getContent()
 
-        self.releventCompanies = ["apple"]
+        self.releventCompanies = self._extractCompanies()
 
     def _extractCompanies(self):
         doc = nlp(self.content)
@@ -25,8 +25,11 @@ class Article():
         return list(set(companies))
 
     def getStockHistory(self, company:str) -> StockHistory:
-        replacmentDate = self._getReplacementDate(self.publishTime)
-        return StockHistory(company, replacmentDate)
+        try:
+            replacmentDate = self._getReplacementDate(self.publishTime)
+            return StockHistory(company, replacmentDate)
+        except Exception as e:
+            print("ERROR: ",e)
     
     def _getReplacementDate(self, objectTime: datetime):
         if self._isItPastTime() == False:
