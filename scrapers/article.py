@@ -21,7 +21,7 @@ class Article():
 
     def _extractCompanies(self):
         doc = nlp(self.content)
-        companies = [entity.text for entity in doc.ents if entity.label_ == "ORG"]
+        companies = [entity.text.lower() for entity in doc.ents if entity.label_ == "ORG"]
         return list(set(companies))
 
     def getStockHistory(self, company:str) -> StockHistory:
