@@ -9,7 +9,7 @@ import yfinance as yf
 import datetime
 import mplfinance as mpf
 from utils.dependencies.stockSymbol import stockSymbole
-from utils.dependencies.productTicker import productToCompanyTicker
+from utils.dependencies.productTicker import productTicker
 
 class StockHistory():
     def __init__(self, companyName: str, articlePublishTime: datetime.datetime, timeFrameInHours = 5):
@@ -34,7 +34,7 @@ class StockHistory():
             return stockSymbole[self.companyName]
         except KeyError:
             try:
-                return productsTickers[self.companyName]
+                return productTicker[self.companyName]
             except KeyError:
                 raise KeyError(f'"{self.companyName}" company ticker not found')
 
