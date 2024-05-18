@@ -13,7 +13,7 @@ class Article():
 
         self.title = self.getTitle()
         self.timeZone = 'US/Eastern'
-        self.publishTime = self.getPublishTime()
+        self.publishTime: datetime.datetime = self.getPublishTime()
         # self.publishTime = datetime.datetime(2024, 3, 11, 12, 30, 0)
         self.content = self.title + " " + self.getContent()
 
@@ -25,17 +25,22 @@ class Article():
         return list(set(companies))
 
     def getStockHistory(self, company:str) -> StockHistory:
-        try:
-            replacmentDate = self._getReplacementDate(self.publishTime)
-            return StockHistory(company, replacmentDate)
-        except Exception as e:
-            print("ERROR: ",e)
+        if self.isWeekend():
+            daysToAdd = 7 - self.publishTime.weekday()
+            nextMonday = self.publishTime + datetime.timedelta(days=daysToAdd)
+            newDate = nextMonday.replace(hour=9, minute=30)
+
+            return StockHistory(company, newDate)
+        return StockHistory(company, self.publishTime)
+    
+    def isWeekend(self) -> bool:
+        return self.publishTime.weekday() >= 5
     
     def _getReplacementDate(self, objectTime: datetime):
         if self._isItPastTime() == False:
-            return objectTime.replace(hour=9, minute=30, second=0, microsecond=0)
+            return objectTime.replace(hour=9, minute=30)
         elif self._isItPastTime(16, 0):
-            newTime = objectTime.replace(hour=9, minute=30, second=0, microsecond=0)
+            newTime = objectTime.replace(hour=9, minute=30)
             return newTime + datetime.timedelta(days=1)
         
         return objectTime
@@ -51,6 +56,6 @@ class Article():
         return self.title
 
 
-if __name__ == "__main__":
+if __name__ == "Main__":
     article = Article("https://www.cnbc.com/2024/03/07/stock-market-today-live-updates.html")
 
