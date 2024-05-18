@@ -12,10 +12,10 @@ from utils.dependencies.stockSymbol import stockSymbole
 from utils.dependencies.productTicker import productTicker
 
 class StockHistory():
-    def __init__(self, companyName: str, articlePublishTime: datetime.datetime, timeFrameInHours = 5):
+    def __init__(self, companyName: str, articlePublishTime: datetime.datetime, timeFrameInDays: int = 1):
         self.companyName = companyName.lower()
         self.articlePublishTime = articlePublishTime
-        self.timeFrameInHours = timeFrameInHours
+        self.timeFrameInDays = timeFrameInDays
 
         self.tickerSymbol = self._getCompanysTicker()
 
@@ -39,7 +39,7 @@ class StockHistory():
                 raise KeyError(f'"{self.companyName}" company ticker not found')
 
     def _getStockDataForTimeframe(self):
-        endTime = self.articlePublishTime + datetime.timedelta(hours=self.timeFrameInHours)
+        endTime = self.articlePublishTime + datetime.timedelta(days=self.timeFrameInDays)
         data = yf.download(self.tickerSymbol, period='1d', interval='1m', start=self.articlePublishTime, end=endTime)
         
         return data
@@ -49,5 +49,5 @@ class StockHistory():
 
 
 if __name__ == "__main__":
-    stockHistory = StockHistory('Apple', datetime.datetime(2024, 3, 11, 12, 30, 0))
-    print(stockHistory["Open"])
+    stockHistory = StockHistory('Apple', datetime.datetime(2024, 5, 7, 9, 30, 0))
+    print(stockHistory.stockDataForTimeframe)
