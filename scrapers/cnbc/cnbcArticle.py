@@ -33,7 +33,7 @@ class CnbcArticle(Article):
         timeString = timeParts[1].upper()     
         
         time = StringToDatetime(timeString).getDatetimeCnbc()
-        publishTime = TimeZone(time, self.timeZone)
+        publishTime = TimeZone(time, self.timeZone).datetimeObject
         return publishTime
 
     def getContent(self) -> str:
