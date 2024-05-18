@@ -16,7 +16,7 @@ class StringToDatetime:
         if amPm == "PM" and hour != 12:
             hour += 12
 
-        return datetime(year, month, day, hour, minute), timeZone
+        return datetime(year, month, day, hour, minute)
     
     def getDatetimeYahoo(self) -> str:
         dateFormat = "%B %d, %Y at %I:%M %p"
