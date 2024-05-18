@@ -1,4 +1,4 @@
-productToCompanyTicker = {
+productTicker = {
     'nike air force 1': 'nke',
     'nike air jordan': 'nke',
     'nike air max': 'nke',
