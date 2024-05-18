@@ -12,11 +12,11 @@ class StringToDatetime:
         }
 
     def getDatetimeCnbc(self) -> datetime:
-        month, day, year, hour, minute, amPm = self._getDate()
+        month, day, year, hour, minute, amPm, timeZone = self._getDate()
         if amPm == "PM" and hour != 12:
             hour += 12
 
-        return datetime(year, month, day, hour, minute)
+        return datetime(year, month, day, hour, minute), timeZone
     
     def getDatetimeYahoo(self) -> str:
         dateFormat = "%B %d, %Y at %I:%M %p"
@@ -38,4 +38,4 @@ class StringToDatetime:
         amPm = parts[4]
         timeZone = parts[5]
 
-        return month, day, year, hour, minute, amPm
+        return month, day, year, hour, minute, amPm, timeZone
