@@ -7,13 +7,19 @@ sys.path.append(parentDir)
 import datetime
 from utils.stringToDatetime import StringToDatetime
 from scrapers.article import Article
-
+from utils.timeZone import TimeZone
 
 
 
 class CnbcArticle(Article):
     def __init__(self, url):
         super().__init__(url)
+    
+    def getTimeZone(self) -> str:
+        timeString = self.getTimeString()        
+        _, _, _, _, _, _, timeZone = StringToDatetime(timeString)._getDate()
+
+        return timeZone
 
     def getTitle(self) -> str:
         try:
@@ -27,13 +33,18 @@ class CnbcArticle(Article):
             raise AttributeError("Not valid article")
 
     def getPublishTime(self) -> datetime:
+        timeString = self.getTimeString()        
+        
+        time = StringToDatetime(timeString).getDatetimeCnbc()
+        publishTime = TimeZone(time, self.timeZone)
+        return publishTime
+
+    def getTimeString(self):
         publishTime = self.soup.find('time').text   
-        time_parts = publishTime.split(' ', 1)
+        timeParts = publishTime.split(' ', 1)
 
-        timeString = time_parts[1].upper()
-
-
-        return StringToDatetime(timeString).getDatetimeCnbc()
+        timeString = timeParts[1].upper()
+        return timeString
 
     def getContent(self) -> str:
         textContainers = self.soup.find_all(class_="group")
