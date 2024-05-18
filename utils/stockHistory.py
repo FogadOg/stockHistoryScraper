@@ -39,17 +39,10 @@ class StockHistory():
                 raise KeyError(f'"{self.companyName}" company ticker not found')
 
     def _getStockDataForTimeframe(self):
-        marketOpenHour = 9
-        marketCloseHour = 14
-
-        if marketOpenHour <= self.articlePublishTime.hour < marketCloseHour:
-            endTime = self.articlePublishTime + datetime.timedelta(hours=self.timeFrameInHours)
-
-            data = yf.download(self.tickerSymbol, period='1d', interval='1m', start=self.articlePublishTime, end=endTime)
-            return data
-        else:
-            raise IndexError(f"You're trying to get data for after market closing hours. Your time is {self.articlePublishTime}")
-
+        endTime = self.articlePublishTime + datetime.timedelta(hours=self.timeFrameInHours)
+        data = yf.download(self.tickerSymbol, period='1d', interval='1m', start=self.articlePublishTime, end=endTime)
+        
+        return data
     
     def renderChart(self):
         mpf.plot(self.stockDataForTimeframe, type='candle', style='charles', volume=True, title=self.companyName)
