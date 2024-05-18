@@ -14,7 +14,7 @@ from utils.dependencies.productTicker import productTicker
 class StockHistory():
     def __init__(self, companyName: str, articlePublishTime: datetime.datetime, timeFrameInHours = 5):
         self.companyName = companyName.lower()
-        self.articlePublishTime = articlePublishTime.replace(tzinfo=datetime.timezone(datetime.timedelta(hours=-4)))
+        self.articlePublishTime = articlePublishTime
         self.timeFrameInHours = timeFrameInHours
 
         self.tickerSymbol = self._getCompanysTicker()
