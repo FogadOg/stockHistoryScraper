@@ -14,12 +14,6 @@ from utils.timeZone import TimeZone
 class CnbcArticle(Article):
     def __init__(self, url):
         super().__init__(url)
-    
-    def getTimeZone(self) -> str:
-        timeString = self.getTimeString()        
-        _, _, _, _, _, _, timeZone = StringToDatetime(timeString)._getDate()
-
-        return timeZone
 
     def getTitle(self) -> str:
         try:
@@ -33,18 +27,14 @@ class CnbcArticle(Article):
             raise AttributeError("Not valid article")
 
     def getPublishTime(self) -> datetime:
-        timeString = self.getTimeString()        
+        publishTime = self.soup.find('time').text   
+        timeParts = publishTime.split(' ', 1)
+
+        timeString = timeParts[1].upper()     
         
         time = StringToDatetime(timeString).getDatetimeCnbc()
         publishTime = TimeZone(time, self.timeZone)
         return publishTime
-
-    def getTimeString(self):
-        publishTime = self.soup.find('time').text   
-        timeParts = publishTime.split(' ', 1)
-
-        timeString = timeParts[1].upper()
-        return timeString
 
     def getContent(self) -> str:
         textContainers = self.soup.find_all(class_="group")

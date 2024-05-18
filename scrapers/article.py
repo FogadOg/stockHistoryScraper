@@ -12,7 +12,7 @@ class Article():
         self.soup = BeautifulSoup(response.text, "html.parser")
 
         self.title = self.getTitle()
-        self.timeZone = self.getTimeZone()
+        self.timeZone = 'US/Eastern'
         self.publishTime = self.getPublishTime()
         # self.publishTime = datetime.datetime(2024, 3, 11, 12, 30, 0)
         self.content = self.title + self.getContent()
