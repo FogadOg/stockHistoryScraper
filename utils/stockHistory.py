@@ -12,7 +12,7 @@ from utils.dependencies.stockSymbol import stockSymbole
 from utils.dependencies.productTicker import productTicker
 
 class StockHistory():
-    def __init__(self, companyName: str, publishTime: datetime.datetime, timeFrameInDays: int = 1):
+    def __init__(self, companyName: str, publishTime: datetime.datetime, timeFrameInDays: int = 2):
         self.companyName = companyName.lower()
         self.publishTime = publishTime
         self.timeFrameInDays = timeFrameInDays
@@ -39,7 +39,7 @@ class StockHistory():
 
     def _getStockDataForTimeframe(self):
         if self.isFriday():
-            days = self.timeFrameInDays + 2
+            days = self.timeFrameInDays + 3
             endTime = self.publishTime + datetime.timedelta(days=days)
         else:
             endTime = self.publishTime + datetime.timedelta(days=self.timeFrameInDays)
