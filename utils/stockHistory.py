@@ -25,10 +25,9 @@ class StockHistory():
 
 
 
-    def __getitem__(self, attribute):
-        attributeData = self.stockDataForTimeframe[attribute]
-        return attributeData.values
-
+    def __getitem__(self, attribute: str):
+        return self.__dict__[attribute]
+    
     def _getCompanysTicker(self):
         try:
             return stockSymbole[self.companyName]
