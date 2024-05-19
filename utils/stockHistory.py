@@ -12,10 +12,10 @@ from utils.dependencies.stockSymbol import stockSymbole
 from utils.dependencies.productTicker import productTicker
 
 class StockHistory():
-    def __init__(self, companyName: str, articlePublishTime: datetime.datetime, timeFrameInHours = 5):
+    def __init__(self, companyName: str, publishTime: datetime.datetime, timeFrameInDays: int = 2):
         self.companyName = companyName.lower()
-        self.articlePublishTime = articlePublishTime.replace(tzinfo=datetime.timezone(datetime.timedelta(hours=-4)))
-        self.timeFrameInHours = timeFrameInHours
+        self.publishTime = publishTime
+        self.timeFrameInDays = timeFrameInDays
 
         self.tickerSymbol = self._getCompanysTicker()
 
@@ -25,10 +25,9 @@ class StockHistory():
 
 
 
-    def __getitem__(self, attribute):
-        attributeData = self.stockDataForTimeframe[attribute]
-        return attributeData.values
-
+    def __getitem__(self, attribute: str):
+        return self.__dict__[attribute]
+    
     def _getCompanysTicker(self):
         try:
             return stockSymbole[self.companyName]
@@ -39,22 +38,23 @@ class StockHistory():
                 raise KeyError(f'"{self.companyName}" company ticker not found')
 
     def _getStockDataForTimeframe(self):
-        marketOpenHour = 9
-        marketCloseHour = 14
-
-        if marketOpenHour <= self.articlePublishTime.hour < marketCloseHour:
-            endTime = self.articlePublishTime + datetime.timedelta(hours=self.timeFrameInHours)
-
-            data = yf.download(self.tickerSymbol, period='1d', interval='1m', start=self.articlePublishTime, end=endTime)
-            return data
+        if self.isFriday():
+            days = self.timeFrameInDays + 3
+            endTime = self.publishTime + datetime.timedelta(days=days)
         else:
-            raise IndexError(f"You're trying to get data for after market closing hours. Your time is {self.articlePublishTime}")
-
+            endTime = self.publishTime + datetime.timedelta(days=self.timeFrameInDays)
+        
+        data = yf.download(self.tickerSymbol, period='1d', interval='1m', start=self.publishTime, end=endTime)
+        return data
+    
+    
+    def isFriday(self) -> bool:
+        return self.publishTime.weekday() == 4
     
     def renderChart(self):
         mpf.plot(self.stockDataForTimeframe, type='candle', style='charles', volume=True, title=self.companyName)
 
 
 if __name__ == "__main__":
-    stockHistory = StockHistory('Apple', datetime.datetime(2024, 3, 11, 12, 30, 0))
-    print(stockHistory["Open"])
+    stockHistory = StockHistory('Apple', datetime.datetime(2024, 5, 7, 9, 30, 0))
+    print(stockHistory.stockDataForTimeframe)
