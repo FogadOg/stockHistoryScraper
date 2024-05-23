@@ -15,7 +15,7 @@ class Article():
         self.timeZone = 'US/Eastern'
         self.publishTime: datetime.datetime = self.getPublishTime()
         # self.publishTime = datetime.datetime(2024, 3, 11, 12, 30, 0)
-        self.content = self.title + " " + self.getContent()
+        self.content = self.getContent()
 
         self.releventCompanies = self._extractCompanies()
 
