@@ -1,17 +1,21 @@
-import sys
-import os
+import  sys, os
+
+currentDir = os.path.dirname(os.path.abspath(__file__))
+parentDir = os.path.abspath(os.path.join(currentDir, '../../'))
+sys.path.append(parentDir)
+
+from utils.export.export import Export
 import csv
 from scrapers.article import Article
 
-class WriteCompany():
+class WriteCompany(Export):
     def __init__(self, article: Article, fileName:str = "stockData.csv"):
-        self.article = article
-        self.filePath = f"{fileName}.csv"
-        self.export()
+        super().__init__(article, fileName)
+
 
     def export(self):
         if self._doesFileExist(self.filePath):
-            self._writeHeader(self.filePath)
+            self._writeHeader("company", "News Article", "Close")
 
         for company in self.article.releventCompanies:
             history = self.article.getStockHistory(company)
@@ -21,14 +25,6 @@ class WriteCompany():
                     closeData = '[' +','.join(map(str, data["Close"].values)) + ']'
                     csvWriter = csv.writer(file)
                     csvWriter.writerow([history.tickerSymbol, self.article.content, closeData])
-    
-    def _doesFileExist(self, csvFile):
-        return not os.path.exists(csvFile)
-
-    def _writeHeader(self, csvFile):        
-        with open(csvFile, "w", newline="") as file:
-            csvWriter = csv.writer(file)
-            csvWriter.writerow(["company", "News Article", "Close"])
 
 
 if __name__ == "__main__":
