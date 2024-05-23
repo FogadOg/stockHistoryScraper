@@ -15,7 +15,7 @@ class Export():
     def _writeHeader(self, *args):        
         with open(self.filePath, "w", newline="") as file:
             csvWriter = csv.writer(file)
-            csvWriter.writerow(*args)
+            csvWriter.writerow(args)
 
 
 
