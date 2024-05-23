@@ -4,7 +4,7 @@ import csv
 from scrapers.article import Article
 
 class WriteArticle():
-    def __init__(self, article: Article, fileName:str = "data"):
+    def __init__(self, article: Article, fileName:str = "articleData"):
         self.article = article
         self.filePath = f"{fileName}.csv"
         self.export()
@@ -13,11 +13,10 @@ class WriteArticle():
         if self._doesFileExist(self.filePath):
             self._writeHeader(self.filePath)
 
-        for company in self.article.releventCompanies:
-            if self.article.content != "":
-                with open(self.filePath, "a", newline="") as file:
-                    csvWriter = csv.writer(file)
-                    csvWriter.writerow([self.article.title, self.article.content, self.article.publishTime])
+        if self.article.content != "":
+            with open(self.filePath, "a", newline="") as file:
+                csvWriter = csv.writer(file)
+                csvWriter.writerow([self.article.title, self.article.content, self.article.publishTime])
     
     def _doesFileExist(self, csvFile):
         return not os.path.exists(csvFile)
