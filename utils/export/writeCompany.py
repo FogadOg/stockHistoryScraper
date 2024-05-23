@@ -4,20 +4,20 @@ import csv
 from scrapers.article import Article
 
 class WriteCompany():
-    def __init__(self, article: Article, fileName:str = "data"):
+    def __init__(self, article: Article, fileName:str = "stockData.csv"):
         self.article = article
         self.filePath = f"{fileName}.csv"
         self.export()
 
-    def export(self, csvFile="stockData.csv"):
-        if self._doesFileExist(csvFile):
-            self._writeHeader(csvFile)
+    def export(self):
+        if self._doesFileExist(self.filePath):
+            self._writeHeader(self.filePath)
 
         for company in self.article.releventCompanies:
             history = self.article.getStockHistory(company)
-            if history != None:
+            if history != None and self.article.content != "":
                 data = history["stockDataForTimeframe"]
-                with open(csvFile, "a", newline="") as file:
+                with open(self.filePath, "a", newline="") as file:
                     closeData = '[' +','.join(map(str, data["Close"].values)) + ']'
                     csvWriter = csv.writer(file)
                     csvWriter.writerow([history.tickerSymbol, self.article.content, closeData])
