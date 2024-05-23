@@ -12,7 +12,7 @@ from utils.dependencies.stockSymbol import stockSymbole
 from utils.dependencies.productTicker import productTicker
 
 class StockHistory():
-    def __init__(self, companyName: str, publishTime: datetime.datetime, timeFrameInDays: int = 2):
+    def __init__(self, companyName: str, publishTime: datetime.datetime, timeFrameInDays: int = 7):
         self.companyName = companyName.lower()
         self.publishTime = publishTime
         self.timeFrameInDays = timeFrameInDays
@@ -27,6 +27,8 @@ class StockHistory():
 
     def __getitem__(self, attribute: str):
         return self.__dict__[attribute]
+    def __len__(self):
+        return len(self.__getitem__(self.stockDataForTimeframe))
     
     def _getCompanysTicker(self):
         try:
