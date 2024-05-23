@@ -1,6 +1,6 @@
 import requests
 from bs4 import BeautifulSoup
-from utils.export import Export
+from utils.export.writeArticle import WriteArticle
 
 class Scraper(object):
     def __init__(self, article, url) -> None:
@@ -9,8 +9,10 @@ class Scraper(object):
         response = requests.get(url)
         self.soup = BeautifulSoup(response.text, "html.parser")
 
-        for articleObject in self._getArticleObject():
-            Export(articleObject)
+        articleObjects = self._getArticleObject()
+        print("number of articals: ",len(articleObjects))
+        for articleObject in articleObjects:
+            WriteArticle(articleObject)
 
     def _getArticleObject(self):
         articles = self.getAllArticles()
