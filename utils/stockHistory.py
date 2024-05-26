@@ -46,7 +46,7 @@ class StockHistory():
         else:
             endTime = self.publishTime + datetime.timedelta(days=self.timeFrameInDays)
         
-        data = yf.download(self.tickerSymbol, period='1d', interval='1m', start=self.publishTime, end=endTime)
+        data = yf.download(self.tickerSymbol, period='1d', interval='5m', start=self.publishTime, end=endTime)
         return data
     
     

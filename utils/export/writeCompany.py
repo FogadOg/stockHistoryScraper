@@ -9,7 +9,7 @@ import csv
 from scrapers.article import Article
 
 class WriteCompany(Export):
-    def __init__(self, article: Article, fileName:str = "stockData.csv"):
+    def __init__(self, article: Article, fileName:str = "stockData"):
         super().__init__(article, fileName)
 
 

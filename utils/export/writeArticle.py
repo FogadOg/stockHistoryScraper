@@ -19,10 +19,9 @@ class WriteArticle(Export):
 
         if self.article.content != "":
             with open(self.filePath, "a", newline="") as file:
-                csvWriter = csv.writer(file)
-                csvWriter.writerow([self.article.title, self.article.content, self.article.publishTime])
-    
-
+                if self.article.title not in self.csvToDict().keys():
+                    csvWriter = csv.writer(file)
+                    csvWriter.writerow([self.article.title, self.article.content, self.article.publishTime])
 
 
 if __name__ == "__main__":
