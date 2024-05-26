@@ -16,6 +16,19 @@ class Export():
         with open(self.filePath, "w", newline="") as file:
             csvWriter = csv.writer(file)
             csvWriter.writerow(args)
+    
+    def csvToDict(self) -> dict:
+        with open(self.filePath, mode='r', newline='') as file:
+            reader = csv.DictReader(file)
+            titleDict = {}
+            
+            for row in reader:
+                title = row.pop("Article Title")
+                titleDict[title] = row
+                    
+        return titleDict
+
+
 
 
 
