@@ -6,7 +6,7 @@ from utils.export.exportArticle import ExportArticle
 from utils.export.writeCompany import WriteCompany
 
 class Main():
-    def __init__(self, createDataset: bool) -> None:
+    def __init__(self, createDataset: bool = False) -> None:
 
         if createDataset == False:
             self.scrapeArticals()
@@ -28,4 +28,4 @@ class Main():
                 WriteCompany(article)
 
 
-Main(True)
+Main()
