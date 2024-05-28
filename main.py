@@ -24,8 +24,11 @@ class Main():
             csvFile = csv.reader(file)
             next(csvFile)
             for line in csvFile:
-                article = ExportArticle(*line)
-                WriteCompany(article)
+                try:
+                    article = ExportArticle(*line)
+                    WriteCompany(article)
+                except Exception as e:
+                    print("ERROR: ",e)
 
 
-Main()
+Main(True)
